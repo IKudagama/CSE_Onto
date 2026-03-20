@@ -1,0 +1,193 @@
+# ================================================================
+# SPARQL Queries — Stock Market Investment & Risk Classification Ontology
+# Prefix: smi = http://www.semanticweb.org/ontologies/StockMarketInvestment#
+# ================================================================
+
+PREFIX smi:   <http://www.semanticweb.org/ontologies/StockMarketInvestment#>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+
+# ================================================================
+# CQ1. Which stocks are classified as high risk?
+# ================================================================
+SELECT ?stock ?ticker ?currentPrice
+WHERE {
+    ?stock a smi:Stock ;
+           smi:tickerSymbol ?ticker ;
+           smi:currentPrice ?currentPrice ;
+           smi:hasRiskLevel smi:HighRiskLevel .
+}
+ORDER BY ?ticker
+
+
+# ================================================================
+# CQ2. What is the dividend yield of each dividend-paying stock?
+# ================================================================
+SELECT ?ticker ?companyName ?dividendYield
+WHERE {
+    ?stock a smi:DividendStock ;
+           smi:tickerSymbol ?ticker ;
+           smi:dividendYield ?dividendYield ;
+           smi:issuedBy ?company .
+    ?company smi:companyName ?companyName .
+}
+ORDER BY DESC(?dividendYield)
+
+
+# ================================================================
+# CQ3. Which investors follow an aggressive investment strategy?
+# ================================================================
+SELECT ?investorName ?strategyLabel
+WHERE {
+    ?investor smi:investorName ?investorName ;
+              smi:followsStrategy ?strategy .
+    ?strategy a smi:AggressiveStrategy ;
+              rdfs:label ?strategyLabel .
+}
+
+
+# ================================================================
+# CQ4. Which stocks are held in a specific investor's portfolio?
+#      (Example: Alice Chen)
+# ================================================================
+SELECT ?investorName ?ticker ?stockType ?riskLabel
+WHERE {
+    ?investor smi:investorName "Alice Chen" ;
+              smi:investorName ?investorName ;
+              smi:ownsPortfolio ?portfolio .
+    ?portfolio smi:containsInstrument ?stock .
+    ?stock smi:tickerSymbol ?ticker ;
+           smi:hasRiskLevel ?riskLevel .
+    ?riskLevel rdfs:label ?riskLabel .
+    ?stock rdf:type ?stockType .
+    FILTER(?stockType != owl:NamedIndividual)
+}
+
+
+# ================================================================
+# CQ5. What is the beta value (volatility) of all technology stocks?
+# ================================================================
+SELECT ?ticker ?companyName ?beta ?riskLabel
+WHERE {
+    ?stock smi:tickerSymbol ?ticker ;
+           smi:beta ?beta ;
+           smi:issuedBy ?company ;
+           smi:hasRiskLevel ?riskLevel .
+    ?company smi:companyName ?companyName ;
+             smi:belongsToSector smi:Tech .
+    ?riskLevel rdfs:label ?riskLabel .
+}
+ORDER BY DESC(?beta)
+
+
+# ================================================================
+# CQ6. List all stocks with a P/E ratio below 20 (potential value plays).
+# ================================================================
+SELECT ?ticker ?companyName ?peRatio ?currentPrice
+WHERE {
+    ?stock smi:tickerSymbol ?ticker ;
+           smi:peRatio ?peRatio ;
+           smi:currentPrice ?currentPrice ;
+           smi:issuedBy ?company .
+    ?company smi:companyName ?companyName .
+    FILTER(?peRatio < 20)
+}
+ORDER BY ?peRatio
+
+
+# ================================================================
+# CQ7. Which stocks are tracked by both the S&P 500 and Dow Jones?
+# ================================================================
+SELECT ?ticker ?companyName
+WHERE {
+    ?stock smi:tickerSymbol ?ticker ;
+           smi:trackedByIndex smi:SP500 ;
+           smi:trackedByIndex smi:DowJones ;
+           smi:issuedBy ?company .
+    ?company smi:companyName ?companyName .
+}
+
+
+# ================================================================
+# CQ8. List all transactions performed by a specific investor,
+#      showing the instrument involved and transaction value.
+#      (Example: Alice Chen)
+# ================================================================
+SELECT ?txLabel ?txType ?ticker ?quantity ?pricePerShare ?totalValue ?txDate
+WHERE {
+    ?transaction smi:performedBy ?investor ;
+                 smi:involvesInstrument ?stock ;
+                 smi:quantity ?quantity ;
+                 smi:pricePerShare ?pricePerShare ;
+                 smi:transactionDate ?txDate ;
+                 rdfs:label ?txLabel ;
+                 rdf:type ?txType .
+    ?investor smi:investorName "Alice Chen" .
+    ?stock smi:tickerSymbol ?ticker .
+    FILTER(?txType != owl:NamedIndividual)
+    BIND((?quantity * ?pricePerShare) AS ?totalValue)
+}
+ORDER BY ?txDate
+
+
+# ================================================================
+# CQ9. What is the total portfolio value and annual return
+#      for each investor?
+# ================================================================
+SELECT ?investorName ?portfolioValue ?annualReturn ?strategyLabel
+WHERE {
+    ?investor smi:investorName ?investorName ;
+              smi:ownsPortfolio ?portfolio ;
+              smi:followsStrategy ?strategy .
+    ?portfolio smi:portfolioValue ?portfolioValue ;
+               smi:annualReturn ?annualReturn .
+    ?strategy rdfs:label ?strategyLabel .
+}
+ORDER BY DESC(?portfolioValue)
+
+
+# ================================================================
+# CQ10. Which sector has the most low-risk stocks?
+# ================================================================
+SELECT ?sectorLabel (COUNT(?stock) AS ?lowRiskCount)
+WHERE {
+    ?stock smi:issuedBy ?company ;
+           smi:hasRiskLevel smi:LowRiskLevel .
+    ?company smi:belongsToSector ?sector .
+    ?sector rdfs:label ?sectorLabel .
+}
+GROUP BY ?sectorLabel
+ORDER BY DESC(?lowRiskCount)
+
+
+# ================================================================
+# CQ11. List stocks where the current price is within 5% of
+#       their 52-week high (near-peak stocks).
+# ================================================================
+SELECT ?ticker ?currentPrice ?fiftyTwoWeekHigh ?pctFromHigh
+WHERE {
+    ?stock smi:tickerSymbol ?ticker ;
+           smi:currentPrice ?currentPrice ;
+           smi:fiftyTwoWeekHigh ?fiftyTwoWeekHigh .
+    BIND(((?fiftyTwoWeekHigh - ?currentPrice) / ?fiftyTwoWeekHigh * 100) AS ?pctFromHigh)
+    FILTER(?pctFromHigh <= 5)
+}
+ORDER BY ?pctFromHigh
+
+
+# ================================================================
+# CQ12. Which portfolios contain at least one high-risk stock?
+#       (Risk exposure check)
+# ================================================================
+SELECT DISTINCT ?investorName ?portfolioValue
+WHERE {
+    ?investor smi:investorName ?investorName ;
+              smi:ownsPortfolio ?portfolio .
+    ?portfolio smi:portfolioValue ?portfolioValue ;
+               smi:containsInstrument ?stock .
+    ?stock smi:hasRiskLevel smi:HighRiskLevel .
+}
+ORDER BY DESC(?portfolioValue)

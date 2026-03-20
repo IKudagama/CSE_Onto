@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY smi "http://www.semanticweb.org/ontologies/StockMarketInvestment#" >
+]>
+
+<rdf:RDF xmlns="http://www.semanticweb.org/ontologies/StockMarketInvestment#"
+     xml:base="http://www.semanticweb.org/ontologies/StockMarketInvestment"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:smi="http://www.semanticweb.org/ontologies/StockMarketInvestment#">
+
+    <!-- ============================================================ -->
+    <!--  Ontology Declaration                                         -->
+    <!-- ============================================================ -->
+
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ontologies/StockMarketInvestment">
+        <rdfs:label xml:lang="en">Stock Market Investment and Risk Classification Ontology</rdfs:label>
+        <rdfs:comment xml:lang="en">
+            An ontology modelling stocks, investors, portfolios, market sectors,
+            risk classifications, and investment strategies for the purpose of
+            answering competency questions about stock market investments.
+        </rdfs:comment>
+        <owl:versionInfo>1.0</owl:versionInfo>
+    </owl:Ontology>
+
+    <!-- ============================================================ -->
+    <!--  CLASS HIERARCHY                                              -->
+    <!-- ============================================================ -->
+
+    <!-- Top-level: FinancialInstrument -->
+    <owl:Class rdf:about="smi:FinancialInstrument">
+        <rdfs:label>Financial Instrument</rdfs:label>
+        <rdfs:comment>Any tradable asset in the financial market.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Stock -->
+    <owl:Class rdf:about="smi:Stock">
+        <rdfs:subClassOf rdf:resource="smi:FinancialInstrument"/>
+        <rdfs:label>Stock</rdfs:label>
+        <rdfs:comment>A share of ownership in a publicly listed company.</rdfs:comment>
+    </owl:Class>
+
+    <!-- GrowthStock -->
+    <owl:Class rdf:about="smi:GrowthStock">
+        <rdfs:subClassOf rdf:resource="smi:Stock"/>
+        <rdfs:label>Growth Stock</rdfs:label>
+        <rdfs:comment>A stock expected to grow at an above-average rate compared to the market.</rdfs:comment>
+    </owl:Class>
+
+    <!-- ValueStock -->
+    <owl:Class rdf:about="smi:ValueStock">
+        <rdfs:subClassOf rdf:resource="smi:Stock"/>
+        <rdfs:label>Value Stock</rdfs:label>
+        <rdfs:comment>A stock trading below its intrinsic or book value.</rdfs:comment>
+    </owl:Class>
+
+    <!-- DividendStock -->
+    <owl:Class rdf:about="smi:DividendStock">
+        <rdfs:subClassOf rdf:resource="smi:Stock"/>
+        <rdfs:label>Dividend Stock</rdfs:label>
+        <rdfs:comment>A stock that pays regular dividends to shareholders.</rdfs:comment>
+    </owl:Class>
+
+    <!-- PennyStock -->
+    <owl:Class rdf:about="smi:PennyStock">
+        <rdfs:subClassOf rdf:resource="smi:Stock"/>
+        <rdfs:label>Penny Stock</rdfs:label>
+        <rdfs:comment>A highly speculative stock trading at very low prices.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Bond -->
+    <owl:Class rdf:about="smi:Bond">
+        <rdfs:subClassOf rdf:resource="smi:FinancialInstrument"/>
+        <rdfs:label>Bond</rdfs:label>
+        <rdfs:comment>A fixed-income debt instrument issued by a corporation or government.</rdfs:comment>
+    </owl:Class>
+
+    <!-- ETF -->
+    <owl:Class rdf:about="smi:ETF">
+        <rdfs:subClassOf rdf:resource="smi:FinancialInstrument"/>
+        <rdfs:label>ETF</rdfs:label>
+        <rdfs:comment>Exchange-Traded Fund tracking an index, sector, or asset class.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Company -->
+    <owl:Class rdf:about="smi:Company">
+        <rdfs:label>Company</rdfs:label>
+        <rdfs:comment>A publicly listed corporation that issues stocks.</rdfs:comment>
+    </owl:Class>
+
+    <!-- MarketSector -->
+    <owl:Class rdf:about="smi:MarketSector">
+        <rdfs:label>Market Sector</rdfs:label>
+        <rdfs:comment>A segment of the economy grouping companies with similar business activities.</rdfs:comment>
+    </owl:Class>
+
+    <!-- Sector sub-classes -->
+    <owl:Class rdf:about="smi:TechnologySector">
+        <rdfs:subClassOf rdf:resource="smi:MarketSector"/>
+        <rdfs:label>Technology Sector</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:HealthcareSector">
+        <rdfs:subClassOf rdf:resource="smi:MarketSector"/>
+        <rdfs:label>Healthcare Sector</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:EnergySector">
+        <rdfs:subClassOf rdf:resource="smi:MarketSector"/>
+        <rdfs:label>Energy Sector</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:FinancialSector">
+        <rdfs:subClassOf rdf:resource="smi:MarketSector"/>
+        <rdfs:label>Financial Sector</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:ConsumerGoodsSector">
+        <rdfs:subClassOf rdf:resource="smi:MarketSector"/>
+        <rdfs:label>Consumer Goods Sector</rdfs:label>
+    </owl:Class>
+
+    <!-- RiskLevel -->
+    <owl:Class rdf:about="smi:RiskLevel">
+        <rdfs:label>Risk Level</rdfs:label>
+        <rdfs:comment>A classification of investment risk.</rdfs:comment>
+    </owl:Class>
+    <owl:Class rdf:about="smi:LowRisk">
+        <rdfs:subClassOf rdf:resource="smi:RiskLevel"/>
+        <rdfs:label>Low Risk</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:MediumRisk">
+        <rdfs:subClassOf rdf:resource="smi:RiskLevel"/>
+        <rdfs:label>Medium Risk</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:HighRisk">
+        <rdfs:subClassOf rdf:resource="smi:RiskLevel"/>
+        <rdfs:label>High Risk</rdfs:label>
+    </owl:Class>
+
+    <!-- Investor -->
+    <owl:Class rdf:about="smi:Investor">
+        <rdfs:label>Investor</rdfs:label>
+        <rdfs:comment>A person or entity that places capital into financial instruments.</rdfs:comment>
+    </owl:Class>
+    <owl:Class rdf:about="smi:RetailInvestor">
+        <rdfs:subClassOf rdf:resource="smi:Investor"/>
+        <rdfs:label>Retail Investor</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:InstitutionalInvestor">
+        <rdfs:subClassOf rdf:resource="smi:Investor"/>
+        <rdfs:label>Institutional Investor</rdfs:label>
+    </owl:Class>
+
+    <!-- Portfolio -->
+    <owl:Class rdf:about="smi:Portfolio">
+        <rdfs:label>Portfolio</rdfs:label>
+        <rdfs:comment>A collection of financial instruments owned by an investor.</rdfs:comment>
+    </owl:Class>
+
+    <!-- InvestmentStrategy -->
+    <owl:Class rdf:about="smi:InvestmentStrategy">
+        <rdfs:label>Investment Strategy</rdfs:label>
+        <rdfs:comment>An approach or plan for allocating capital in financial instruments.</rdfs:comment>
+    </owl:Class>
+    <owl:Class rdf:about="smi:AggressiveStrategy">
+        <rdfs:subClassOf rdf:resource="smi:InvestmentStrategy"/>
+        <rdfs:label>Aggressive Strategy</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:ConservativeStrategy">
+        <rdfs:subClassOf rdf:resource="smi:InvestmentStrategy"/>
+        <rdfs:label>Conservative Strategy</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:BalancedStrategy">
+        <rdfs:subClassOf rdf:resource="smi:InvestmentStrategy"/>
+        <rdfs:label>Balanced Strategy</rdfs:label>
+    </owl:Class>
+
+    <!-- Market Index -->
+    <owl:Class rdf:about="smi:MarketIndex">
+        <rdfs:label>Market Index</rdfs:label>
+        <rdfs:comment>A benchmark tracking the performance of a group of stocks (e.g., S&amp;P 500).</rdfs:comment>
+    </owl:Class>
+
+    <!-- Transaction -->
+    <owl:Class rdf:about="smi:Transaction">
+        <rdfs:label>Transaction</rdfs:label>
+        <rdfs:comment>A buy or sell event of a financial instrument.</rdfs:comment>
+    </owl:Class>
+    <owl:Class rdf:about="smi:BuyTransaction">
+        <rdfs:subClassOf rdf:resource="smi:Transaction"/>
+        <rdfs:label>Buy Transaction</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="smi:SellTransaction">
+        <rdfs:subClassOf rdf:resource="smi:Transaction"/>
+        <rdfs:label>Sell Transaction</rdfs:label>
+    </owl:Class>
+
+    <!-- ============================================================ -->
+    <!--  DISJOINT CLASSES                                             -->
+    <!-- ============================================================ -->
+
+    <owl:AllDisjointClasses>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="smi:GrowthStock"/>
+            <rdf:Description rdf:about="smi:ValueStock"/>
+            <rdf:Description rdf:about="smi:PennyStock"/>
+        </owl:members>
+    </owl:AllDisjointClasses>
+
+    <owl:AllDisjointClasses>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="smi:LowRisk"/>
+            <rdf:Description rdf:about="smi:MediumRisk"/>
+            <rdf:Description rdf:about="smi:HighRisk"/>
+        </owl:members>
+    </owl:AllDisjointClasses>
+
+    <owl:AllDisjointClasses>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="smi:AggressiveStrategy"/>
+            <rdf:Description rdf:about="smi:ConservativeStrategy"/>
+            <rdf:Description rdf:about="smi:BalancedStrategy"/>
+        </owl:members>
+    </owl:AllDisjointClasses>
+
+    <!-- ============================================================ -->
+    <!--  OBJECT PROPERTIES                                            -->
+    <!-- ============================================================ -->
+
+    <!-- hasRiskLevel: Stock → RiskLevel -->
+    <owl:ObjectProperty rdf:about="smi:hasRiskLevel">
+        <rdfs:label>has Risk Level</rdfs:label>
+        <rdfs:domain rdf:resource="smi:FinancialInstrument"/>
+        <rdfs:range rdf:resource="smi:RiskLevel"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+        <rdfs:comment>Associates a financial instrument with its risk classification.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- issuedBy: Stock → Company -->
+    <owl:ObjectProperty rdf:about="smi:issuedBy">
+        <rdfs:label>is Issued By</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="smi:Company"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+        <rdfs:comment>Links a stock to the company that issued it.</rdfs:comment>
+    </owl:ObjectProperty>
+
+    <!-- issuesStock: Company → Stock (inverse of issuedBy) -->
+    <owl:ObjectProperty rdf:about="smi:issuesStock">
+        <rdfs:label>issues Stock</rdfs:label>
+        <owl:inverseOf rdf:resource="smi:issuedBy"/>
+        <rdfs:domain rdf:resource="smi:Company"/>
+        <rdfs:range rdf:resource="smi:Stock"/>
+    </owl:ObjectProperty>
+
+    <!-- belongsToSector: Company → MarketSector -->
+    <owl:ObjectProperty rdf:about="smi:belongsToSector">
+        <rdfs:label>belongs To Sector</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Company"/>
+        <rdfs:range rdf:resource="smi:MarketSector"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <!-- ownsPortfolio: Investor → Portfolio -->
+    <owl:ObjectProperty rdf:about="smi:ownsPortfolio">
+        <rdfs:label>owns Portfolio</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Investor"/>
+        <rdfs:range rdf:resource="smi:Portfolio"/>
+        <rdf:type rdf:resource="owl:InverseFunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <!-- containsInstrument: Portfolio → FinancialInstrument -->
+    <owl:ObjectProperty rdf:about="smi:containsInstrument">
+        <rdfs:label>contains Instrument</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Portfolio"/>
+        <rdfs:range rdf:resource="smi:FinancialInstrument"/>
+    </owl:ObjectProperty>
+
+    <!-- followsStrategy: Investor → InvestmentStrategy -->
+    <owl:ObjectProperty rdf:about="smi:followsStrategy">
+        <rdfs:label>follows Strategy</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Investor"/>
+        <rdfs:range rdf:resource="smi:InvestmentStrategy"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <!-- trackedByIndex: Stock → MarketIndex -->
+    <owl:ObjectProperty rdf:about="smi:trackedByIndex">
+        <rdfs:label>tracked By Index</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="smi:MarketIndex"/>
+    </owl:ObjectProperty>
+
+    <!-- performedBy: Transaction → Investor -->
+    <owl:ObjectProperty rdf:about="smi:performedBy">
+        <rdfs:label>performed By</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Transaction"/>
+        <rdfs:range rdf:resource="smi:Investor"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <!-- involvesInstrument: Transaction → FinancialInstrument -->
+    <owl:ObjectProperty rdf:about="smi:involvesInstrument">
+        <rdfs:label>involves Instrument</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Transaction"/>
+        <rdfs:range rdf:resource="smi:FinancialInstrument"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:ObjectProperty>
+
+    <!-- ============================================================ -->
+    <!--  DATA PROPERTIES                                              -->
+    <!-- ============================================================ -->
+
+    <!-- Stock ticker symbol -->
+    <owl:DatatypeProperty rdf:about="smi:tickerSymbol">
+        <rdfs:label>ticker Symbol</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Current price -->
+    <owl:DatatypeProperty rdf:about="smi:currentPrice">
+        <rdfs:label>current Price (USD)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:FinancialInstrument"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Market capitalisation -->
+    <owl:DatatypeProperty rdf:about="smi:marketCap">
+        <rdfs:label>market Cap (USD billions)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Annual dividend yield (percentage) -->
+    <owl:DatatypeProperty rdf:about="smi:dividendYield">
+        <rdfs:label>dividend Yield (%)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Price-to-Earnings ratio -->
+    <owl:DatatypeProperty rdf:about="smi:peRatio">
+        <rdfs:label>P/E Ratio</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Beta (volatility relative to market) -->
+    <owl:DatatypeProperty rdf:about="smi:beta">
+        <rdfs:label>Beta</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- 52-week high -->
+    <owl:DatatypeProperty rdf:about="smi:fiftyTwoWeekHigh">
+        <rdfs:label>52-Week High (USD)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+    </owl:DatatypeProperty>
+
+    <!-- 52-week low -->
+    <owl:DatatypeProperty rdf:about="smi:fiftyTwoWeekLow">
+        <rdfs:label>52-Week Low (USD)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Stock"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+    </owl:DatatypeProperty>
+
+    <!-- Company name -->
+    <owl:DatatypeProperty rdf:about="smi:companyName">
+        <rdfs:label>company Name</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Company"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Country of origin -->
+    <owl:DatatypeProperty rdf:about="smi:country">
+        <rdfs:label>country</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Company"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+    </owl:DatatypeProperty>
+
+    <!-- Investor name -->
+    <owl:DatatypeProperty rdf:about="smi:investorName">
+        <rdfs:label>investor Name</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Investor"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Portfolio total value -->
+    <owl:DatatypeProperty rdf:about="smi:portfolioValue">
+        <rdfs:label>portfolio Value (USD)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Portfolio"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Annual return (%) -->
+    <owl:DatatypeProperty rdf:about="smi:annualReturn">
+        <rdfs:label>annual Return (%)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Portfolio"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+    </owl:DatatypeProperty>
+
+    <!-- Transaction date -->
+    <owl:DatatypeProperty rdf:about="smi:transactionDate">
+        <rdfs:label>transaction Date</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Transaction"/>
+        <rdfs:range rdf:resource="xsd:date"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Transaction quantity -->
+    <owl:DatatypeProperty rdf:about="smi:quantity">
+        <rdfs:label>quantity (shares)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Transaction"/>
+        <rdfs:range rdf:resource="xsd:integer"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Transaction price per share -->
+    <owl:DatatypeProperty rdf:about="smi:pricePerShare">
+        <rdfs:label>price Per Share (USD)</rdfs:label>
+        <rdfs:domain rdf:resource="smi:Transaction"/>
+        <rdfs:range rdf:resource="xsd:decimal"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- Index name -->
+    <owl:DatatypeProperty rdf:about="smi:indexName">
+        <rdfs:label>index Name</rdfs:label>
+        <rdfs:domain rdf:resource="smi:MarketIndex"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdf:type rdf:resource="owl:FunctionalProperty"/>
+    </owl:DatatypeProperty>
+
+    <!-- ============================================================ -->
+    <!--  OWL RESTRICTIONS ON CLASSES                                  -->
+    <!-- ============================================================ -->
+
+    <!-- DividendStock must have dividendYield > 0 (modelled as hasValue restriction) -->
+    <owl:Class rdf:about="smi:DividendStock">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="smi:hasRiskLevel"/>
+                <owl:someValuesFrom rdf:resource="smi:RiskLevel"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- Every Portfolio must containsInstrument at least 1 FinancialInstrument -->
+    <owl:Class rdf:about="smi:Portfolio">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="smi:containsInstrument"/>
+                <owl:minCardinality rdf:datatype="xsd:nonNegativeInteger">1</owl:minCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- Every Stock must be issuedBy exactly 1 Company -->
+    <owl:Class rdf:about="smi:Stock">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="smi:issuedBy"/>
+                <owl:cardinality rdf:datatype="xsd:nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="smi:hasRiskLevel"/>
+                <owl:cardinality rdf:datatype="xsd:nonNegativeInteger">1</owl:cardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Market Sectors                                 -->
+    <!-- ============================================================ -->
+
+    <smi:TechnologySector rdf:about="smi:Tech">
+        <rdfs:label>Technology</rdfs:label>
+    </smi:TechnologySector>
+
+    <smi:HealthcareSector rdf:about="smi:Healthcare">
+        <rdfs:label>Healthcare</rdfs:label>
+    </smi:HealthcareSector>
+
+    <smi:EnergySector rdf:about="smi:Energy">
+        <rdfs:label>Energy</rdfs:label>
+    </smi:EnergySector>
+
+    <smi:FinancialSector rdf:about="smi:Finance">
+        <rdfs:label>Finance</rdfs:label>
+    </smi:FinancialSector>
+
+    <smi:ConsumerGoodsSector rdf:about="smi:ConsumerGoods">
+        <rdfs:label>Consumer Goods</rdfs:label>
+    </smi:ConsumerGoodsSector>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Risk Levels                                    -->
+    <!-- ============================================================ -->
+
+    <smi:LowRisk rdf:about="smi:LowRiskLevel">
+        <rdfs:label>Low Risk</rdfs:label>
+    </smi:LowRisk>
+
+    <smi:MediumRisk rdf:about="smi:MediumRiskLevel">
+        <rdfs:label>Medium Risk</rdfs:label>
+    </smi:MediumRisk>
+
+    <smi:HighRisk rdf:about="smi:HighRiskLevel">
+        <rdfs:label>High Risk</rdfs:label>
+    </smi:HighRisk>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Market Indices                                 -->
+    <!-- ============================================================ -->
+
+    <smi:MarketIndex rdf:about="smi:SP500">
+        <smi:indexName>S&amp;P 500</smi:indexName>
+        <rdfs:label>S&amp;P 500</rdfs:label>
+    </smi:MarketIndex>
+
+    <smi:MarketIndex rdf:about="smi:NASDAQ">
+        <smi:indexName>NASDAQ Composite</smi:indexName>
+        <rdfs:label>NASDAQ</rdfs:label>
+    </smi:MarketIndex>
+
+    <smi:MarketIndex rdf:about="smi:DowJones">
+        <smi:indexName>Dow Jones Industrial Average</smi:indexName>
+        <rdfs:label>Dow Jones</rdfs:label>
+    </smi:MarketIndex>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Companies                                      -->
+    <!-- ============================================================ -->
+
+    <smi:Company rdf:about="smi:Apple_Inc">
+        <smi:companyName>Apple Inc.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Tech"/>
+        <rdfs:label>Apple Inc.</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:Microsoft_Corp">
+        <smi:companyName>Microsoft Corporation</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Tech"/>
+        <rdfs:label>Microsoft Corporation</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:Tesla_Inc">
+        <smi:companyName>Tesla Inc.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Tech"/>
+        <rdfs:label>Tesla Inc.</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:Johnson_Johnson">
+        <smi:companyName>Johnson &amp; Johnson</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Healthcare"/>
+        <rdfs:label>Johnson &amp; Johnson</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:Pfizer">
+        <smi:companyName>Pfizer Inc.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Healthcare"/>
+        <rdfs:label>Pfizer Inc.</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:ExxonMobil">
+        <smi:companyName>ExxonMobil Corporation</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Energy"/>
+        <rdfs:label>ExxonMobil</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:JPMorgan">
+        <smi:companyName>JPMorgan Chase &amp; Co.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:Finance"/>
+        <rdfs:label>JPMorgan Chase</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:Procter_Gamble">
+        <smi:companyName>Procter &amp; Gamble Co.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:ConsumerGoods"/>
+        <rdfs:label>Procter &amp; Gamble</rdfs:label>
+    </smi:Company>
+
+    <smi:Company rdf:about="smi:GameStop">
+        <smi:companyName>GameStop Corp.</smi:companyName>
+        <smi:country>USA</smi:country>
+        <smi:belongsToSector rdf:resource="smi:ConsumerGoods"/>
+        <rdfs:label>GameStop</rdfs:label>
+    </smi:Company>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Stocks                                         -->
+    <!-- ============================================================ -->
+
+    <!-- AAPL — Growth Stock, Low-Medium Risk -->
+    <smi:GrowthStock rdf:about="smi:AAPL">
+        <rdfs:label>AAPL – Apple Inc.</rdfs:label>
+        <smi:tickerSymbol>AAPL</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">189.30</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">2940.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">0.5</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">30.2</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">1.2</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">199.62</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">164.08</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Apple_Inc"/>
+        <smi:hasRiskLevel rdf:resource="smi:MediumRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:NASDAQ"/>
+    </smi:GrowthStock>
+
+    <!-- MSFT — Growth Stock, Low Risk -->
+    <smi:GrowthStock rdf:about="smi:MSFT">
+        <rdfs:label>MSFT – Microsoft Corp.</rdfs:label>
+        <smi:tickerSymbol>MSFT</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">415.50</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">3090.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">0.7</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">36.1</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">0.9</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">468.35</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">362.90</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Microsoft_Corp"/>
+        <smi:hasRiskLevel rdf:resource="smi:LowRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:NASDAQ"/>
+    </smi:GrowthStock>
+
+    <!-- TSLA — Growth Stock, High Risk -->
+    <smi:GrowthStock rdf:about="smi:TSLA">
+        <rdfs:label>TSLA – Tesla Inc.</rdfs:label>
+        <smi:tickerSymbol>TSLA</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">248.00</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">790.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">0.0</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">72.4</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">2.1</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">299.29</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">138.80</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Tesla_Inc"/>
+        <smi:hasRiskLevel rdf:resource="smi:HighRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:NASDAQ"/>
+    </smi:GrowthStock>
+
+    <!-- JNJ — Dividend Stock, Low Risk -->
+    <smi:DividendStock rdf:about="smi:JNJ">
+        <rdfs:label>JNJ – Johnson &amp; Johnson</rdfs:label>
+        <smi:tickerSymbol>JNJ</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">157.80</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">380.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">3.1</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">15.3</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">0.6</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">168.40</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">143.13</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Johnson_Johnson"/>
+        <smi:hasRiskLevel rdf:resource="smi:LowRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:DowJones"/>
+    </smi:DividendStock>
+
+    <!-- PFE — Value Stock, Medium Risk -->
+    <smi:ValueStock rdf:about="smi:PFE">
+        <rdfs:label>PFE – Pfizer Inc.</rdfs:label>
+        <smi:tickerSymbol>PFE</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">28.50</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">161.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">6.2</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">12.4</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">0.55</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">38.90</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">25.20</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Pfizer"/>
+        <smi:hasRiskLevel rdf:resource="smi:MediumRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+    </smi:ValueStock>
+
+    <!-- XOM — Dividend Stock, Medium Risk -->
+    <smi:DividendStock rdf:about="smi:XOM">
+        <rdfs:label>XOM – ExxonMobil</rdfs:label>
+        <smi:tickerSymbol>XOM</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">112.40</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">449.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">3.6</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">13.8</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">0.85</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">123.75</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">95.77</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:ExxonMobil"/>
+        <smi:hasRiskLevel rdf:resource="smi:MediumRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:DowJones"/>
+    </smi:DividendStock>
+
+    <!-- JPM — Value Stock, Medium Risk -->
+    <smi:ValueStock rdf:about="smi:JPM">
+        <rdfs:label>JPM – JPMorgan Chase</rdfs:label>
+        <smi:tickerSymbol>JPM</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">203.70</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">588.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">2.3</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">11.6</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">1.1</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">220.82</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">148.88</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:JPMorgan"/>
+        <smi:hasRiskLevel rdf:resource="smi:MediumRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:DowJones"/>
+    </smi:ValueStock>
+
+    <!-- PG — Dividend Stock, Low Risk -->
+    <smi:DividendStock rdf:about="smi:PG">
+        <rdfs:label>PG – Procter &amp; Gamble</rdfs:label>
+        <smi:tickerSymbol>PG</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">162.90</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">384.0</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">2.4</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">25.1</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">0.5</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">175.00</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">142.50</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:Procter_Gamble"/>
+        <smi:hasRiskLevel rdf:resource="smi:LowRiskLevel"/>
+        <smi:trackedByIndex rdf:resource="smi:SP500"/>
+        <smi:trackedByIndex rdf:resource="smi:DowJones"/>
+    </smi:DividendStock>
+
+    <!-- GME — Penny/Speculative Stock, High Risk -->
+    <smi:PennyStock rdf:about="smi:GME">
+        <rdfs:label>GME – GameStop Corp.</rdfs:label>
+        <smi:tickerSymbol>GME</smi:tickerSymbol>
+        <smi:currentPrice rdf:datatype="xsd:decimal">14.20</smi:currentPrice>
+        <smi:marketCap rdf:datatype="xsd:decimal">6.1</smi:marketCap>
+        <smi:dividendYield rdf:datatype="xsd:decimal">0.0</smi:dividendYield>
+        <smi:peRatio rdf:datatype="xsd:decimal">999.9</smi:peRatio>
+        <smi:beta rdf:datatype="xsd:decimal">2.8</smi:beta>
+        <smi:fiftyTwoWeekHigh rdf:datatype="xsd:decimal">28.15</smi:fiftyTwoWeekHigh>
+        <smi:fiftyTwoWeekLow rdf:datatype="xsd:decimal">9.95</smi:fiftyTwoWeekLow>
+        <smi:issuedBy rdf:resource="smi:GameStop"/>
+        <smi:hasRiskLevel rdf:resource="smi:HighRiskLevel"/>
+    </smi:PennyStock>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Investment Strategies                          -->
+    <!-- ============================================================ -->
+
+    <smi:AggressiveStrategy rdf:about="smi:AggressiveGrowth">
+        <rdfs:label>Aggressive Growth</rdfs:label>
+    </smi:AggressiveStrategy>
+
+    <smi:ConservativeStrategy rdf:about="smi:IncomeAndStability">
+        <rdfs:label>Income and Stability</rdfs:label>
+    </smi:ConservativeStrategy>
+
+    <smi:BalancedStrategy rdf:about="smi:BalancedGrowthIncome">
+        <rdfs:label>Balanced Growth and Income</rdfs:label>
+    </smi:BalancedStrategy>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Investors                                      -->
+    <!-- ============================================================ -->
+
+    <smi:RetailInvestor rdf:about="smi:Investor_Alice">
+        <smi:investorName>Alice Chen</smi:investorName>
+        <smi:followsStrategy rdf:resource="smi:AggressiveGrowth"/>
+        <smi:ownsPortfolio rdf:resource="smi:Portfolio_Alice"/>
+        <rdfs:label>Alice Chen</rdfs:label>
+    </smi:RetailInvestor>
+
+    <smi:RetailInvestor rdf:about="smi:Investor_Bob">
+        <smi:investorName>Bob Williams</smi:investorName>
+        <smi:followsStrategy rdf:resource="smi:IncomeAndStability"/>
+        <smi:ownsPortfolio rdf:resource="smi:Portfolio_Bob"/>
+        <rdfs:label>Bob Williams</rdfs:label>
+    </smi:RetailInvestor>
+
+    <smi:InstitutionalInvestor rdf:about="smi:Investor_VanguardFund">
+        <smi:investorName>Vanguard Growth Fund</smi:investorName>
+        <smi:followsStrategy rdf:resource="smi:BalancedGrowthIncome"/>
+        <smi:ownsPortfolio rdf:resource="smi:Portfolio_Vanguard"/>
+        <rdfs:label>Vanguard Growth Fund</rdfs:label>
+    </smi:InstitutionalInvestor>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Portfolios                                     -->
+    <!-- ============================================================ -->
+
+    <smi:Portfolio rdf:about="smi:Portfolio_Alice">
+        <rdfs:label>Alice's Portfolio</rdfs:label>
+        <smi:portfolioValue rdf:datatype="xsd:decimal">52000.00</smi:portfolioValue>
+        <smi:annualReturn rdf:datatype="xsd:decimal">18.5</smi:annualReturn>
+        <smi:containsInstrument rdf:resource="smi:TSLA"/>
+        <smi:containsInstrument rdf:resource="smi:AAPL"/>
+        <smi:containsInstrument rdf:resource="smi:GME"/>
+    </smi:Portfolio>
+
+    <smi:Portfolio rdf:about="smi:Portfolio_Bob">
+        <rdfs:label>Bob's Portfolio</rdfs:label>
+        <smi:portfolioValue rdf:datatype="xsd:decimal">120000.00</smi:portfolioValue>
+        <smi:annualReturn rdf:datatype="xsd:decimal">7.2</smi:annualReturn>
+        <smi:containsInstrument rdf:resource="smi:JNJ"/>
+        <smi:containsInstrument rdf:resource="smi:PG"/>
+        <smi:containsInstrument rdf:resource="smi:XOM"/>
+    </smi:Portfolio>
+
+    <smi:Portfolio rdf:about="smi:Portfolio_Vanguard">
+        <rdfs:label>Vanguard Portfolio</rdfs:label>
+        <smi:portfolioValue rdf:datatype="xsd:decimal">5600000.00</smi:portfolioValue>
+        <smi:annualReturn rdf:datatype="xsd:decimal">12.1</smi:annualReturn>
+        <smi:containsInstrument rdf:resource="smi:MSFT"/>
+        <smi:containsInstrument rdf:resource="smi:JPM"/>
+        <smi:containsInstrument rdf:resource="smi:PFE"/>
+        <smi:containsInstrument rdf:resource="smi:JNJ"/>
+    </smi:Portfolio>
+
+    <!-- ============================================================ -->
+    <!--  INDIVIDUALS — Transactions                                   -->
+    <!-- ============================================================ -->
+
+    <smi:BuyTransaction rdf:about="smi:TX001">
+        <rdfs:label>TX001 – Alice buys TSLA</rdfs:label>
+        <smi:transactionDate rdf:datatype="xsd:date">2024-01-15</smi:transactionDate>
+        <smi:quantity rdf:datatype="xsd:integer">50</smi:quantity>
+        <smi:pricePerShare rdf:datatype="xsd:decimal">220.50</smi:pricePerShare>
+        <smi:performedBy rdf:resource="smi:Investor_Alice"/>
+        <smi:involvesInstrument rdf:resource="smi:TSLA"/>
+    </smi:BuyTransaction>
+
+    <smi:BuyTransaction rdf:about="smi:TX002">
+        <rdfs:label>TX002 – Bob buys JNJ</rdfs:label>
+        <smi:transactionDate rdf:datatype="xsd:date">2024-02-10</smi:transactionDate>
+        <smi:quantity rdf:datatype="xsd:integer">100</smi:quantity>
+        <smi:pricePerShare rdf:datatype="xsd:decimal">152.30</smi:pricePerShare>
+        <smi:performedBy rdf:resource="smi:Investor_Bob"/>
+        <smi:involvesInstrument rdf:resource="smi:JNJ"/>
+    </smi:BuyTransaction>
+
+    <smi:SellTransaction rdf:about="smi:TX003">
+        <rdfs:label>TX003 – Alice sells GME</rdfs:label>
+        <smi:transactionDate rdf:datatype="xsd:date">2024-03-20</smi:transactionDate>
+        <smi:quantity rdf:datatype="xsd:integer">200</smi:quantity>
+        <smi:pricePerShare rdf:datatype="xsd:decimal">22.80</smi:pricePerShare>
+        <smi:performedBy rdf:resource="smi:Investor_Alice"/>
+        <smi:involvesInstrument rdf:resource="smi:GME"/>
+    </smi:SellTransaction>
+
+    <smi:BuyTransaction rdf:about="smi:TX004">
+        <rdfs:label>TX004 – Vanguard buys MSFT</rdfs:label>
+        <smi:transactionDate rdf:datatype="xsd:date">2024-04-05</smi:transactionDate>
+        <smi:quantity rdf:datatype="xsd:integer">5000</smi:quantity>
+        <smi:pricePerShare rdf:datatype="xsd:decimal">398.00</smi:pricePerShare>
+        <smi:performedBy rdf:resource="smi:Investor_VanguardFund"/>
+        <smi:involvesInstrument rdf:resource="smi:MSFT"/>
+    </smi:BuyTransaction>
+
+    <smi:SellTransaction rdf:about="smi:TX005">
+        <rdfs:label>TX005 – Bob sells XOM</rdfs:label>
+        <smi:transactionDate rdf:datatype="xsd:date">2024-06-18</smi:transactionDate>
+        <smi:quantity rdf:datatype="xsd:integer">75</smi:quantity>
+        <smi:pricePerShare rdf:datatype="xsd:decimal">118.90</smi:pricePerShare>
+        <smi:performedBy rdf:resource="smi:Investor_Bob"/>
+        <smi:involvesInstrument rdf:resource="smi:XOM"/>
+    </smi:SellTransaction>
+
+</rdf:RDF>
